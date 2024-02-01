@@ -1,4 +1,7 @@
-// import { put } from "../Sessions/Cache";
+import { arguments } from "../Types/userArguments";
 
-
-export let put: () => void;
+export interface Cache
+{
+    set(args : arguments): void;
+    get() : void
+}

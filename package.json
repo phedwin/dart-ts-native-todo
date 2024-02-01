@@ -9,6 +9,9 @@
     "typescript": "^5.0.0"
   },
   "scripts": {
-    "compile" : "bun run index.ts"
+    "compile": "bun run index.ts"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.1"
   }
 }
