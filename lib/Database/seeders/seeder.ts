@@ -24,12 +24,12 @@ async function seedData() {
           active: user.active,
           username: user.username,
           email: user.email,
-          userInfo: JSON.stringify(user.user_info),
+          // userInfo: JSON.stringify(user.user_info),
           createdAt: new Date(user.created_at),
           updatedAt: new Date(user.updated_at),
           emailVerifiedAt: new Date(user.email_verified_at),
           posts: {
-            create: user.posts.map(post => ({
+            create: user.posts.map((post: { status: any; title: any; context: any; created_at: string | number | Date; updated_at: string | number | Date; }) => ({
               status: post.status,
               title: post.title,
               context: post.context,
