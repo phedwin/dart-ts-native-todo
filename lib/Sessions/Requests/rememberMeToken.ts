@@ -1,6 +1,6 @@
 
 
-const generateSessionToken = (length: number): string =>
+const generateRememberMeToken = (length: number): string =>
 {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const charactersLength = characters.length;
@@ -14,7 +14,7 @@ const generateSessionToken = (length: number): string =>
     return token;
 }
    
-export { generateSessionToken }
+export { generateRememberMeToken }
 
 
   

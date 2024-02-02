@@ -14,17 +14,5 @@ interface User
 
 }
 
-class Users
-{
-    all() : []
-    {
-        return [];
-    }
-    find()
-    {
-
-    }
-}
-
-export { User, Users};
+export { User }
 
