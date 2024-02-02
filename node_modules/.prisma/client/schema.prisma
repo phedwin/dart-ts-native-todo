@@ -1,0 +1,40 @@
+// schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               Int       @id @default(autoincrement())
+  firstName        String
+  secondName       String
+  profilePhoto     String?
+  remember         Int
+  active           Int
+  username         String
+  email            String    @unique
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  deletedAt        DateTime?
+  emailVerifiedAt  DateTime?
+
+  posts            Post[]
+}
+
+model Post {
+  id          Int      @id @default(autoincrement())
+  status      String
+  userId      Int
+  title       String
+  context     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  deletedAt   DateTime?
+
+  user        User     @relation(fields: [userId], references: [id])
+}

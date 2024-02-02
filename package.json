@@ -12,6 +12,10 @@
     "compile": "bun run index.ts"
   },
   "dependencies": {
-    "dotenv": "^16.4.1"
+    "@prisma/client": "5.7.1",
+    "axios": "^1.6.7",
+    "dotenv": "^16.4.1",
+    "prisma": "^5.9.1",
+    "sqlite3": "^5.1.7"
   }
 }

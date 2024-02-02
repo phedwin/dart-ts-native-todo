@@ -1,11 +1,44 @@
-import { DB } from "./lib/Database/ArrayDB";
+import { PrismaClient } from '@prisma/client'
 
 
-
-let myDB: string[] = ["work", "us", "here"];
-let db = new DB(myDB);
-db.query('insert', 'phedwine');
+const prisma = new PrismaClient()
 
 
+async function main() {
+
+  const user = await prisma.user.create({
+
+    data: {
+
+      username: 'Alice',
+
+      email: 'alice@prisma.io',
+
+    },
+
+  })
+
+  console.log(user)
+
+}
 
 
+main()
+
+  .then(async () => {
+
+    await prisma.$disconnect()
+
+  })
+
+  .catch(async (e) => {
+
+    console.error(e)
+
+    await prisma.$disconnect()
+
+    process.exit(1)
+
+  });
+
+  main();

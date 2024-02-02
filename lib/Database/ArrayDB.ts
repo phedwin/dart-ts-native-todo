@@ -1,23 +1,14 @@
-
-import { isJSDocCallbackTag } from "typescript";
-
+import Database from "bun:sqlite";
 
 class DB
 {
-    constructor(public database: string[]){}
 
-    query(args: string, newInsert: string)
+    query(query : string) 
     {
-        //this is so funny
+        // this is not so good in the meantime but we can work w/ it
+        const db = new Database("../cli/lib/Database/database.db");
+        return db.query(query).get();
 
-        let c = args.startsWith('select') ? this.database : [] 
-        
-        let b  = args.startsWith('hello') ? this.database.push(newInsert).valueOf(): new Error("nothing inserted");
-        
-        console.log(b);
-        
-        // return args.startsWith('select') ? this.database : [] ||
-        // args.startsWith('insert') ? this.database.push(newInsert): new Error("nothing inserted");
     }
 }
 
