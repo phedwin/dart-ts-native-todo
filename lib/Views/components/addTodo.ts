@@ -1,4 +1,4 @@
-import { Details } from "./Interface/DetailsType";
+import { Details } from "../../Interface/DetailsType";
 import { put } from "./Facades/Cache";
 
 

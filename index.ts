@@ -1,3 +1,11 @@
+import { DB } from "./lib/Database/ArrayDB";
 
 
-console.log(cacheType);
+
+let myDB: string[] = ["work", "us", "here"];
+let db = new DB(myDB);
+db.query('insert', 'phedwine');
+
+
+
+
