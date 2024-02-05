@@ -1,9 +1,12 @@
+
+
 //
 //  im mocking the data from a local api i built w/ laraval
 //  
 
 import axios from 'axios';
-import { prisma } from '../client';
+import { prisma } from '../lib/Database/client';
+
 
  // seeding to some sqlite db
 async function seedData() {

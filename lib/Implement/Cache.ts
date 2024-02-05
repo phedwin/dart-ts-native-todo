@@ -3,16 +3,19 @@ import { arguments } from "../Types/userArguments";
 
 
 
-class simpleCache implements Cache
-{
-    constructor(public cache : arguments[]){};
-    set(args : arguments): void 
-    {
-        this.cache.push(args);
-    }
-    get(): arguments []
-    {
-        return this.cache;
-    }
 
+
+// i want something like
+
+class ArrayCache
+{
+    constructor(public args : arguments[]){}
+    put(tempCache: string)
+    {
+        // add into the cache, this shouldnt hit the db
+        this.args.push(tempCache);
+    }
 }
+
+let newCache :arguments[] = [] 
+let cache = new ArrayCache(newCache);

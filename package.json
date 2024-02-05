@@ -9,13 +9,29 @@
     "typescript": "^5.0.0"
   },
   "scripts": {
-    "compile": "bun run index.ts"
+    "compile": "bun run index.ts",
+    "watch": "bun run index.ts --watch"
   },
+
+  "prisma": {
+    "seed": "bun compile ./prisma/seed.ts"
+  },
+  
   "dependencies": {
     "@prisma/client": "5.7.1",
     "axios": "^1.6.7",
     "dotenv": "^16.4.1",
     "prisma": "^5.9.1",
     "sqlite3": "^5.1.7"
-  }
+  },
+  "description": "A sample todo-app application with an entrypoint in `bin/`, library code in `lib/`, and example unit test in `test/`.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

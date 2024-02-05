@@ -1,66 +1,82 @@
 
+/**
+ * 
+ * @param username 
+ * @param password 
+ * @param remember 
+ * @returns 
+ * 
+ * before u hit this endpoint
+ * check if the user is actually a guest, u can't login an already logged in user
+ * genereate new session token, im assuming at logout i will invalidate their session
+ * incase at login they allow remember me, then generate random token for that
+ * all this will be pushed via prisma client. In the meantime bun memory db will work
+ * after all this validation check against records, if true ? return 1 : else reject
+ * 
+ * ps --.>> we need encrypt & decrypt password
+ */
 
-/***
-/* my thought process
-/* when u get a new login
-/* create a new session
-/* compare the userform with that in database 
-/* if they click remember me which by default should default to false then make a new token 
-/* and store as a cookie
-/********************/
+import { guestMiddleware } from "../../Middleware/guest";
+import { performLoginCheck, saveRememberMeTokenToDatabase } from "../Requests/Auth/authentication";
+import { validatePassword, validateUsername } from "../Requests/Auth/validation";
 import { generateRememberMeToken } from "../Requests/rememberMeToken";
 import { generateSessionToken } from "../Requests/sessionToken";
-import { validatePassword, validateUsername } from "../Requests/Auth/validation";
-import { performLoginCheck, saveRememberMeTokenToDatabase } from "../Requests/Auth/authentication";
-import { guestMiddleware } from "../../Middleware/guest";
+
+const loginUser = 
+    async (
+        username: string, 
+        password: string, 
+        remember: boolean = false
+        ): Promise<void> => 
+    {
+        try 
+        {
+
+            // check url manually or request current url and validate
+            //todo =>> request url this will make the url dynamic && avoid hardcoding
+            let url = 'http://localhost:8001/users/';
+            const isGuest = await guestMiddleware(url);
+
+            if (!isGuest) {
+            console.error('User is not a guest. Cannot perform login.');
+            
+            return;// || process.exit(1);
+            
+            };
+
+            if (!validateUsername(username) || !validatePassword(password)) {
+            console.log('Invalid username or password format.');
+            return;
+            }
+
+            const sessionToken = generateSessionToken(64);
+
+            if (remember) {
+            const rememberToken = generateRememberMeToken(32);
 
 
-//before this runs, firts i think the page should be guest
-//so im gonna have guest middlware running before this 
+            await saveRememberMeTokenToDatabase(username, rememberToken);
+            }
 
-const loginUser = async (username: string, password: string, remember: boolean = false): Promise<void> => {
-  try {
+            const isAuthenticated = await performLoginCheck(username, password, sessionToken);
 
-    //check with the guest middlware
+            // here i will check against the db, just to ascertain
+            if (isAuthenticated) 
+            {
+                console.log('User logged in successfully!');
+            } 
+            else 
+            {
+                console.log('Invalid username or password.');
+            }
 
-    const isGuest = await guestMiddleware();
-
-    if (!isGuest) {
-      console.log('User is not a guest. Cannot perform login.');
-      return;
-    };
-
-    // Validate username and password
-    if (!validateUsername(username) || !validatePassword(password)) {
-      console.log('Invalid username or password format.');
-      return;
-    }
-
-    // Generate a session token
-    const sessionToken = generateSessionToken(64);
-
-    if (remember) {
-      // Generate a remember-me token
-      const rememberToken = generateRememberMeToken(32);
-
-      // Store the remember-me token in the database or as a cookie
-      await saveRememberMeTokenToDatabase(username, rememberToken);
-    }
-
-    // Perform the login check
-    const isAuthenticated = await performLoginCheck(username, password, sessionToken);
-
-    if (isAuthenticated) {
-      console.log('User logged in successfully!');
-    } else {
-      console.log('Invalid username or password.');
-    }
-
-  } catch (error) {
-    console.error('Error during login:', error);
-  }
+        } 
+        catch (error) 
+        {
+            console.error('Error during login:', error);
+        }
 };
 
 
-// Example usage
-loginUser('phedwin', 'password', true);
+// when a certain url is requested like localhost:port/login we can then serve this
+// it passed all the test, yeahhh i did not write any tests but i console logged and its pretty OK
