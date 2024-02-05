@@ -78,5 +78,9 @@ const loginUser =
 };
 
 
+export { loginUser }
+
 // when a certain url is requested like localhost:port/login we can then serve this
 // it passed all the test, yeahhh i did not write any tests but i console logged and its pretty OK
+
+
