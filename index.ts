@@ -1,69 +1,31 @@
+import { prisma } from "./lib/Database/client";
+import UserFactory from "./lib/Database/factories/UserFactory";
 
 
 
+const numberOfUsers = 10;
 
-//
-//  im mocking the data from a local api i built w/ laraval
-//  
+const users: { username: string; email: string; password: string; }[] = [];
 
-import axios from 'axios';
-import { prisma } from './lib/Database/client';
+for (let i = 0; i < numberOfUsers; i++) {
+  const username = UserFactory.generateRandomUsername();
+  const email = UserFactory.generateRandomEmail();
+  const password = UserFactory.generateRandomPassword();
+  users.push({ username, email , password});
+}
 
 
-
- // seeding to some sqlite db
-async function seedData() {
-    try 
-    {
-
-     const response = await axios.get('http://localhost:8000/users');
-     const users = response.data;
-
-     console.log('Fetched users from API:', users);
-
-    for (let i = 0; i < users.length; i++) 
-    {
-        await prisma.users.create(
-            {
-                data : 
-                {
-                    firstName : users[i].firstName,
-                    secondName : users[i].secondName,
-                    profilePhoto : users[i].profilePhoto,
-                    remember : users[i].remember,
-                    active : users[i].active,
-                    username : users[i].username,
-                    email : users[i].email,
-                }
-                
-            }
-        )    
-        
+async function main() {
+    try {
+        const createdUsers = await prisma.users.createMany({ data: users });
+        console.log("Users created:", createdUsers);
+    } catch (error) {
+        console.error("Error creating users:", error);
+        process.exit(1);
+    } finally {
+        await prisma.$disconnect();
     }
-    console.log('Created user:', users);
-     
-    
-    } 
+}
 
-    catch (error) 
-    {
-        console.error('Error seeding data:', error);
-    } 
-   finally 
-    {
-     await prisma.$disconnect();
-    }
- }
- 
- seedData()
-    .then(async() => {
-        prisma.$disconnect()
-    })
-    .catch(async (e) =>
-    {
-        prisma.$disconnect()
-        console.log(e);
-        
-    });
-
-
+  
+main()

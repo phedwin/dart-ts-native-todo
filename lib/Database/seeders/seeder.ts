@@ -16,6 +16,8 @@ for (let i = 0; i < numberOfUsers; i++) {
 
 async function main() {
     const user = prisma.users.createMany({ data : users})
+    console.log(user);
+    
   }
   
 main()
