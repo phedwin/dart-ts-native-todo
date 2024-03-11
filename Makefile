@@ -4,4 +4,4 @@
 # completely unnecessary
 
 bun :
-	echo "hello world"
+	bun run lib/index.ts
