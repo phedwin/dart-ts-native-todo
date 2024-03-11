@@ -5,3 +5,5 @@
 
 bun :
 	bun run lib/index.ts
+bun-test :
+	bun test
